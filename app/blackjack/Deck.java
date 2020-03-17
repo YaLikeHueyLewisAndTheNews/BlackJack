@@ -1,7 +1,6 @@
-package app;
+package app.blackjack;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class Deck {
 
@@ -30,6 +29,16 @@ public class Deck {
         return cards.remove(0);
     }
  
+    public List<PlayingCard> drawCards(Integer num){
+
+        ArrayList<PlayingCard> cardsToReturn = new ArrayList<PlayingCard>();
+
+        for(Integer i = 0; i < num; i++){
+            cardsToReturn.add(this.cards.remove(0));
+        }
+
+        return cardsToReturn;
+    }
 
     public String toString(){
 

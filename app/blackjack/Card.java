@@ -1,4 +1,4 @@
-package app;
+package app.blackjack;
 
 public abstract class Card{
 

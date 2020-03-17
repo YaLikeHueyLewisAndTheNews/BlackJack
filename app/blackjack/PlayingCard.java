@@ -1,4 +1,4 @@
-package app;
+package app.blackjack;
 
 public class PlayingCard extends Card{
 

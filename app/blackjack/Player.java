@@ -1,6 +1,6 @@
-package app;
+package app.blackjack;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Player {
 
@@ -24,6 +24,10 @@ public class Player {
     public void addCard(PlayingCard card){
         this.sum += card.getValue();
         this.hand.add(card);
+    }
+
+    public void addCards(Collection<PlayingCard> cards){
+        hand.addAll(cards);
     }
 
     public void clearHand(){
