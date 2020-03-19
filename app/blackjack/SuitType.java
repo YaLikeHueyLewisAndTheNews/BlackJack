@@ -1,7 +1,7 @@
 package app.blackjack;
 
 public enum SuitType{
-    ACE,
+    CLUBS,
     SPADE,
     HEART,
     DIAMOND;
