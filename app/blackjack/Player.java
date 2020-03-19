@@ -1,6 +1,9 @@
 package app.blackjack;
 
+import java.io.IOException;
 import java.util.*;
+
+import app.utility.ReadInputUtility;
 
 public class Player {
 
@@ -22,12 +25,46 @@ public class Player {
     }
 
     public void addCard(PlayingCard card){
-        this.sum += card.getValue();
+        if(card.getRank().equals(RankType.ACE)){
+            handleAce(card);
+        }
+        sum += card.getValue();
         this.hand.add(card);
     }
 
     public void addCards(Collection<PlayingCard> cards){
+
+        for(PlayingCard card : cards){
+            if(card.getRank().equals(RankType.ACE)){
+                handleAce(card);
+            }
+            System.out.println(card);
+            sum += card.getValue();
+        }
         hand.addAll(cards);
+    }
+
+    private void handleAce(PlayingCard card){
+
+        Boolean isException = true;
+        do{
+            try{
+                determineValueForAce(card);
+                isException = false;
+            }catch(Exception e){
+                System.out.println("Ops! Something went wrong. Please try again.");
+            }
+        }while(isException);
+
+    }
+
+    private void determineValueForAce(PlayingCard card) throws Exception{
+        if(this.name.equalsIgnoreCase(BlackJack.DEALER)){
+            //TO DO
+        }else{
+            Integer aceValue = Integer.valueOf(ReadInputUtility.getUserInput("Please select a value for Ace: 1 or 11"));
+            card.withValue(aceValue);
+        }
     }
 
     public void clearHand(){
