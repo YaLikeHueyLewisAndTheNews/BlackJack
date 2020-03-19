@@ -23,6 +23,10 @@ public class PlayingCard extends Card{
 
     }
 
+    public RankType getRank(){
+        return this.rankType;
+    }
+
     public String toString(){
         return this.suitType.toString() + " : " + this.rankType.toString();
     }
