@@ -1,11 +1,9 @@
 package app.blackjack;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import app.utility.Queue;
+import app.utility.ReadInputUtility;
 
 public class BlackJack{
     
@@ -13,11 +11,12 @@ public class BlackJack{
     private ArrayList<Player> players;
     private HashSet<Player> playersInGame;   //keeps track of players that still have coins to bet with
     private HashSet<Player> playersInRound;   //keeps track of players that still have coins to bet with
-    private final static String DEALER = "Dealer";
-    private final static String PLAYER = "Player";
+    public final static String DEALER = "Dealer";
+    public final static String PLAYER = "Player";
     private Player dealer;
     private Integer startCoins;
     private Integer numOfPlayers;
+    private Integer bettingPot;
 
 
     public BlackJack(Integer startingCoins, Integer numOfPlayers){
@@ -39,6 +38,9 @@ public class BlackJack{
     }
 
     public void startNewGame(){
+        bettingPot = 0;
+        playersInGame = new HashSet<Player>();
+        playersInRound = new HashSet<Player>();
         this.deck = new Deck();
         players = new ArrayList<Player>(this.numOfPlayers);
         generatePlayers();
@@ -47,7 +49,9 @@ public class BlackJack{
 
     public void playGame(){
         do{
+            bettingPot = 0;
             handleRound();
+            break;
         }while(!playersInGame.isEmpty());
     }
 
@@ -57,6 +61,14 @@ public class BlackJack{
         playersInRound.addAll(playersInGame);
         handleBets();
         distributeStartingCards();
+        do{
+            handlePhase();
+            break;
+        }while(!playersInRound.isEmpty());
+
+    }
+
+    private void handlePhase(){
 
     }
 
@@ -68,20 +80,19 @@ public class BlackJack{
     }
 
     private void handleBets(){
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Queue<Player> playersBetting = new Queue<Player>(playersInRound);
         do{
             Player p = playersBetting.peek();
-            System.out.println(p.getName() + " please enter the amount of coins you would like bet:");
             try{
 
-                Integer bet = Integer.valueOf(reader.readLine());
+                Integer bet = Integer.valueOf(ReadInputUtility.getUserInput(p.getName() + " please enter the amount of coins you would like to bet:"));
 
                 //If a player chooses not to bet, they are removed from the round
                 if(bet == 0){
                     this.playersInRound.remove(p);
                 }else{
                     p.setBettingCoins(bet);
+                    bettingPot += bet;
                 }
 
                 playersBetting.remove();
