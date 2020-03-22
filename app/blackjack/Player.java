@@ -2,6 +2,7 @@ package app.blackjack;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import app.utility.ReadInputUtility;
 
@@ -11,17 +12,12 @@ public class Player {
     private ArrayList<PlayingCard> hand;
     private Integer coins;
     private String name;
-    private Integer bettingCoins;
-    private Boolean stay;
-
 
     public Player(Integer coins, String name){
         this.sum = 0;
         this.hand = new ArrayList<PlayingCard>();
         this.coins = coins;
         this.name = name;
-        this.stay = false;
-        this.bettingCoins = 0;
     }
 
     public void addCard(PlayingCard card){
@@ -34,14 +30,15 @@ public class Player {
 
     public void addCards(Collection<PlayingCard> cards){
 
+        hand.addAll(cards);
+        System.out.println("Current hand: \n" + this.getHand() + "\n");
+
         for(PlayingCard card : cards){
             if(card.getRank().equals(RankType.ACE)){
                 handleAce(card);
             }
-            System.out.println(card);
             sum += card.getValue();
         }
-        hand.addAll(cards);
     }
 
     private void handleAce(PlayingCard card){
@@ -70,8 +67,6 @@ public class Player {
     public void clearHand(){
         this.sum = 0;
         this.hand.clear();
-        this.stay = false;
-        this.bettingCoins = 0;
     }
 
     public boolean isBust(){
@@ -98,14 +93,27 @@ public class Player {
         return this.name;
     }
 
-    public void stayHand(){
-        this.stay = true;
+    public Integer getSum(){
+        return this.sum;
     }
 
-    public void setBettingCoins(Integer bettingCoins){
-        if(bettingCoins > this.coins){
+    public String getHand(){
+
+        String handString = "";
+
+        for(PlayingCard card : hand){
+            handString = handString + card + "\n";
+        }
+
+        return handString;
+    }
+
+    public void betCoins(Integer coins){
+
+        if(coins > this.coins){
             throw new ArithmeticException("You can't bet more coins than you have!");
         }
-        this.bettingCoins = bettingCoins;
+
+        this.coins -= coins;
     }
 }
